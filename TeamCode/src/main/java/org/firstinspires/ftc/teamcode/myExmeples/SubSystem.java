@@ -7,36 +7,26 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 import org.checkerframework.checker.nullness.qual.NonNull;
-import org.firstinspires.ftc.teamcode.actions.SetPowerAction;
 
 @Disabled
 public class SubSystem {
+
     private double power = 0;
-    private DcMotorEx motor = null;
-    SetPowerAction setPowerAction = new SetPowerAction();
+    private DcMotorEx liftMotor = null;
 
 
     public SubSystem(OpMode opMode) {
-        motor = opMode.hardwareMap.get(DcMotorEx.class, "motor");
-        setPowerAction.setMotor(motor);
+        liftMotor = opMode.hardwareMap.get(DcMotorEx.class, "motor");
     }
-
     public Action setPower(double power) {
-        this.power = power;
-        return setPowerAction;
+        return new SetPowerAction();
     }
-
+    public class SetPowerAction implements Action {
+        @Override
+        public boolean run(@NonNull TelemetryPacket packet) {
+            liftMotor.setPower(power);
+            return power>0;
+        }
+    }
 }
-
-//    public class SetPower implements Action {
-//        @Override
-//        public boolean run(@NonNull TelemetryPacket packet) {
-//            motor.setPower(power);
-//            return power>0;
-//        }
-//}
-//    public Action setPowerNum(double power){
-//        this.power = power;
-//        return new SetPower();
-//    }
 

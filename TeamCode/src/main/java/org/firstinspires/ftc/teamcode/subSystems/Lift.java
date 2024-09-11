@@ -1,11 +1,13 @@
 package org.firstinspires.ftc.teamcode.subSystems;
 
 import com.acmerobotics.roadrunner.Action;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 import org.firstinspires.ftc.teamcode.actions.SetPowerAction;
 
+@Disabled
 public class Lift {
     private double power = 0;
     private DcMotorEx liftMotor = null;

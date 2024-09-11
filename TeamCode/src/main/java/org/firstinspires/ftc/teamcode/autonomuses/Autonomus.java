@@ -8,40 +8,44 @@ import com.acmerobotics.roadrunner.Vector2d;
 import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-
-// RR-specific imports
 import com.acmerobotics.dashboard.config.Config;
-
-// Non-RR imports
-
 import org.firstinspires.ftc.teamcode.MecanumDrive;
+import org.firstinspires.ftc.teamcode.subSystems.BetterLift;
 
 @Config
-@Autonomous(name = "auto")
+@Autonomous(name = "autonomus")
 public class Autonomus extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
-        TrajectoryActionBuilder trajectoryAction2;
-        Action trajectoryActionChosen;
-        MecanumDrive mecanumDrive = new MecanumDrive(hardwareMap, new Pose2d(11.8, 61.7, Math.toRadians(90)));
-        trajectoryAction2 = mecanumDrive.actionBuilder(mecanumDrive.pose)
+        Action trajectoryAction1;
+        Action trajectoryAction2;
+        BetterLift lift = new BetterLift(this);
+        MecanumDrive mecanumDrive = new MecanumDrive(hardwareMap, new Pose2d(11.8, 61.7, Math.toRadians(0)));
+        trajectoryAction1 = mecanumDrive.actionBuilder(mecanumDrive.pose)
                 .strafeTo(new Vector2d(100,200))
                 .waitSeconds(1)
-                .strafeTo(new Vector2d(200,300));
+                .strafeTo(new Vector2d(200,300))
+                .build();
+        trajectoryAction2 = mecanumDrive.actionBuilder(mecanumDrive.pose)
+                .strafeTo(new Vector2d(400,500))
+                .waitSeconds(1)
+                .strafeTo(new Vector2d(100,200))
+                .build();
+
+
+
+
         if (opModeIsActive()&&!isStopRequested()){
 
             Actions.runBlocking(new SequentialAction(
-                    trajectoryAction2.build()
+                    trajectoryAction1,
+                    lift.setLevel(1),
+                    lift.setLevel(0),
+                    trajectoryAction2,
+                    lift.setLevel(2)
                     )
-
             );
         }
-
-
-
-
-
-
 
         }
     }
